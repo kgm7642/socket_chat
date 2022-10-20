@@ -19,6 +19,7 @@ public class SocketHandler extends TextWebSocketHandler {
     	
         super.afterConnectionEstablished(session);
         System.out.println("세션의 아이디"+session.getId());
+        System.out.println("세션 정보"+session);
         sessionMap.put(session.getId(), session);
     }
     
@@ -27,12 +28,14 @@ public class SocketHandler extends TextWebSocketHandler {
         //소켓 종료시 동작하는 메소드
         sessionMap.remove(session.getId());
         super.afterConnectionClosed(session, status);
+        System.out.println("소캣 연결 종료");
     }
     
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) {
         //메시지 발송시 동작하는 메소드
         String msg = message.getPayload();
+        System.out.println("메세지 확인 : " + msg);
         for(String key : sessionMap.keySet()) {
             WebSocketSession wss = sessionMap.get(key);
             try {

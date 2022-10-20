@@ -48,10 +48,18 @@
     </div>
 </body>
 <script type="text/javascript">
+
+	// 소켓을 담을 변수
 	let sock;
 	
-	function wsOpen(){
+	// 페이지 로딩되면 바로 실행
+	$(document).ready(function() {
+		// 소캣 저장
 		sock = new WebSocket("ws://" + location.host + "/chating");
+	});
+
+	
+	function wsOpen(){
 	    wsEvt();
 	}
 	    
@@ -60,22 +68,22 @@
 	        //소켓이 열리면 초기화 세팅하기
 	    }
 	    
-	    ws.onmessage = function(data) {
-	        var msg = data.data;
+	    sock.onmessage = function(data) {
+	    	let msg = data.data;
 	        if(msg != null && msg.trim() != ''){
 	            $("#chating").append("<p>" + msg + "</p>");
 	        }
 	    }
 	
 	    document.addEventListener("keypress", function(e){
-	        if(e.keyCode == 13){ //enter press
+	        if(e.keyCode == 13){ // 엔터키 누르면
 	            send();
 	        }
 	    });
 	}
 	
 	function chatName(){
-	    var userName = $("#userName").val();
+	    let userName = $("#userName").val();
 	    if(userName == null || userName.trim() == ""){
 	        alert("사용자 이름을 입력해주세요.");
 	        $("#userName").focus();
@@ -87,8 +95,8 @@
 	}
 	
 	function send() {
-	    var uN = $("#userName").val();
-	    var msg = $("#chatting").val();
+		let uN = $("#userName").val();
+		let msg = $("#chatting").val();
 	    sock.send(uN+" : "+msg);
 	    $('#chatting').val("");
 	}
